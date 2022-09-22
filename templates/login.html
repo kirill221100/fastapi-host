@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    {% if msg %}
+        {{ msg }}
+    {% endif %}
+    <form method="post" action="">
+        <label for="username">Username</label>
+        <input name="username" id="username">
+        <label for="password">Password</label>
+        <input name="password" id="password">
+        <button type="submit">Login</button>
+    </form>
+    <a href="{{ url_for('register_get')}}">Register if you don't have an account</a>
+</body>
+</html>

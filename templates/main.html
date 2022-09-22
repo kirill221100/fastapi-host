@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block nav %}
+{% endblock %}
+
+{% block header %}
+  {% block title %}Main{% endblock %}
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <tbody>
+      <div class="container gy-5">
+        <div class="row py-4">
+          {% if not pages%}
+            <div class="alert alert-secondary" role="alert">
+              <p>No websites are currently deployed. Create one to get started!</p>
+              <a href="{{ url_for('create_get') }}" class="btn btn-primary">Create static site</a>
+            </div>
+          {%else%}
+            <a href="{{ url_for('create_get') }}" class="btn btn-primary">Create static site</a>
+          {%endif%}
+        </div>
+      </div>
+      {% for page in pages %}
+        <tr>
+          <td class="align-bottom" colspan="4">
+            <div class="p-1">
+              <a href="{{ url_for('site', url=page.route) }}" class="fs-5 align-bottom" target="_blank">{{ page.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div class="float-end p-1">
+              <a href="{{ url_for('delete', url=page.route) }}" class="btn btn-sm btn-danger" type="submit">Delete</a>
+
+            </div>
+            <div class="float-end p-1">
+              <a href="{{ url_for('update_get', url=page.route) }}" class="btn btn-sm btn-primary" type="submit" >Edit</a>
+            </div>
+
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

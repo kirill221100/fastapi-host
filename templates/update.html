@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block nav %}
+  <ul class="nav nav-pills">
+    <li class="nav-item fs-6"><a href="{{ url_for('main_get') }}" class="nav-link">Back to site directory</a></li>
+  </ul>
+{% endblock %}
+
+{% block header %}
+  {% block title %}Update site '{{ host.name }}'{% endblock %}
+{% endblock %}
+
+{% block content %}
+  {{ msg }}
+  <section class="p-2">
+    <form action="" method="post">
+      <div class="mb-3">
+        <label for="url" class="form-label">Name of site</label>
+        <input type="text" class="form-control" name="site-name" id="site-name" value="{{ host.name }}" required>
+      </div>
+      <div class="mb-3">
+        <label for="url" class="form-label">Route of site</label>
+        <input type="text" class="form-control" name="url" id="url" value="{{ host.route }}" required>
+      </div>
+      <div class="mb-3">
+        <strong>OR</strong>
+      </div>
+      <div class="mb-3">
+        <label for="site-content" class="form-label">Content</label>
+        <textarea class="form-control" name="site-content" id="site-content" rows="5" required>{{ host.data }}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </section>
+{% endblock %}

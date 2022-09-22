@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+  <title>Host19 - {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/bootstrap.min.css')}}">
+  <script src="{{ url_for('static', path='/bootstrap.min.css')}}"></script>
+</head>
+<body>
+  <div class="container p-2">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="{{ url_for('main_get') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-3">Host19</span>
+      </a>
+      <a href="{{url_for('logout')}}">Logout</a>
+      {% block nav %}{% endblock %}
+    </header>
+  </div>
+  <section class="container-md px-4">
+    <div>
+      <header class="row gy-4">
+        <span class="fs-4">{% block header %}{% endblock %}</span>
+      </header>
+    </div>
+    {% block content %}{% endblock %}
+  </section>
+</body>

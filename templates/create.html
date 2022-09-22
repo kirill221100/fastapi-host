@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block nav %}
+{% endblock %}
+
+{% block header %}
+  {% block title %}Create new static site{% endblock %}
+{% endblock %}
+
+{% block content %}
+<section class="p-2">
+  {% if msg %}
+    <div id="nameHelp" class="form-text">{{msg}}</div>
+  {% endif %}
+  <form action="" method="post">
+    <div class="mb-3">
+      <label for="site-name" class="form-label">Name</label>
+      <input type="text" class="form-control" name="site-name" id="site-name" aria-describedby="nameHelp" required>
+
+    </div>
+    <div class="mb-3">
+      <label for="url" class="form-label">Route of site</label>
+      <input type="text" class="form-control" id="url" name="url" required>
+    </div>
+    <div class="mb-3">
+      <strong>OR</strong>
+    </div>
+    <div class="mb-3">
+      <label for="site-content" class="form-label">Content</label>
+      <textarea class="form-control" name="site-content" id="site-content" rows="5" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+</section>
+{% endblock %}
