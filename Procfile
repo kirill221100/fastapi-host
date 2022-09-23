@@ -1,1 +1,1 @@
-web: uvicorn main:app
+web: uvicorn main:app --preload --timeout 0
