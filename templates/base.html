@@ -10,7 +10,11 @@
       <a href="{{ url_for('main_get') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
         <span class="fs-3">Host19</span>
       </a>
-      <a href="{{url_for('logout')}}">Logout</a>
+      {% if request.session.get('username') %}
+        <a href="{{url_for('logout')}}">Logout</a>
+      {%else%}
+        <a href="{{url_for('login_get')}}">Login</a>
+      {%endif%}
       {% block nav %}{% endblock %}
     </header>
   </div>
