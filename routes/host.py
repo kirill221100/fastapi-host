@@ -39,7 +39,7 @@ async def create_post(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse('create.html', {'request': request, 'msg': form.errors[0]})
 
 
-@router.get('/site/{url}')
+@router.get('/site/{url:path}')
 async def site(request: Request, url: str, db: Session = Depends(get_db)):
     host = get_host(db, url)
     if not host:
@@ -47,7 +47,7 @@ async def site(request: Request, url: str, db: Session = Depends(get_db)):
     return templates.TemplateResponse('site.html', {'request': request, 'content': host.data})
 
 
-@router.get('/delete/{url}')
+@router.get('/delete/{url:path}')
 async def delete(request: Request, url: str, db: Session = Depends(get_db)):
     host = get_host(db, url)
     if host.user.username != request.session.get('username'):
@@ -56,7 +56,7 @@ async def delete(request: Request, url: str, db: Session = Depends(get_db)):
     return RedirectResponse(request.url_for('main_get'), status_code=303)
 
 
-@router.get('/update/{url}')
+@router.get('/update/{url:path}')
 async def update_get(request: Request, url: str, db: Session = Depends(get_db)):
     host = get_host(db, url)
     if host.user.username != request.session.get('username'):
@@ -64,7 +64,7 @@ async def update_get(request: Request, url: str, db: Session = Depends(get_db)):
     return templates.TemplateResponse('update.html', {'request': request, 'host': host})
 
 
-@router.post('/update/{url}')
+@router.post('/update/{url:path}')
 async def update_post(request: Request, url: str, db: Session = Depends(get_db)):
     host = get_host(db, url)
     if host.user.username != request.session.get('username'):

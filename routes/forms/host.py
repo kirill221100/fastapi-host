@@ -21,7 +21,7 @@ class HostForm:
             self.errors.append("Route shouldn't contain spaces")
         elif '\\' in self.url:
             self.errors.append("Route shouldn't contain backslashes")
-        elif '' in ''.join(self.url.split('/')):
+        elif '' in self.url.split('/'):
             self.errors.append("Too much '/'")
         elif self.url[0] == '/' or self.url[-1] == '/':
             self.errors.append("Route shouldn't start or end with '/'")
