@@ -12,10 +12,10 @@ host_model.HostModel.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-app.mount('/static', StaticFiles(directory='static'), name='static')
-
 app.include_router(auth_router)
 app.include_router(host_router)
+
+app.mount('/static', StaticFiles(directory='static'), name='static')
 
 app.add_middleware(SessionMiddleware, secret_key='secret')
 
