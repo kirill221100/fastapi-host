@@ -11,7 +11,7 @@
         <span class="fs-3">Host19</span>
       </a>
       {% if request.session.get('username') %}
-        <a href="{{url_for('logout')}}">Logout</a>
+        <a href="{{url_for('logout')}}">{{request.session.get('username')}} Logout</a>
       {%else%}
         <a href="{{url_for('login_get')}}">Login</a>
       {%endif%}

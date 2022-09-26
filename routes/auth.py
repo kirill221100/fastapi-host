@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from db.db_setup import get_db
 from db.utils.user import add_new_user, get_user
 from .forms.user import UserForm
@@ -19,12 +19,13 @@ async def login_get(request: Request):
 
 
 @router.post('/login')
-async def login_post(request: Request, db: Session = Depends(get_db)):
+async def login_post(request: Request, db: AsyncSession = Depends(get_db)):
     if request.session.get('username'):
         return RedirectResponse(request.url_for('main_get'), status_code=303)
     form = UserForm(request)
     await form.load_data()
-    user = get_user(form.username, db)
+    user = await get_user(form.username, db)
+    print(user, 2292992)
     if user and Hasher.verify_password(form.password, user.password_hash):
         request.session['username'] = user.username
         return RedirectResponse(request.url_for('main_get'), status_code=303)
@@ -39,12 +40,13 @@ async def register_get(request: Request):
 
 
 @router.post('/register')
-async def register_post(request: Request, db: Session = Depends(get_db)):
+async def register_post(request: Request, db: AsyncSession = Depends(get_db)):
     if request.session.get('username'):
         return RedirectResponse(request.url_for('main_get'), status_code=303)
     form = UserForm(request)
     await form.load_data()
-    user = add_new_user(form.username, form.password, db)
+    user = await add_new_user(form.username, form.password, db)
+    print(user, 392393939)
     if user:
         request.session['username'] = user.username
         return RedirectResponse(request.url_for('main_get'), status_code=303)

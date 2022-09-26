@@ -1,44 +1,46 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+from sqlalchemy import select
 from ..models.host_model import HostModel
 from ..models.user_model import UserModel
 from .user import get_user
 from routes.forms.host import HostForm
 
 
-def get_host(db: Session, route: str):
-    return db.query(HostModel).filter(HostModel.route == route).first()
+async def get_host(db: AsyncSession, route: str):
+    host = await db.execute(select(HostModel).filter(HostModel.route == route).options(selectinload(HostModel.user)))
+    return host.scalars().first()
 
 
-def delete_host(db: Session, route: str):
-    host = get_host(db, route)
-    db.delete(host)
-    db.commit()
+async def delete_host(db: AsyncSession, route: str):
+    host = await get_host(db, route)
+    await db.delete(host)
+    await db.commit()
     return True
 
 
-def update_host(db: Session, hostform: HostForm, url: str):
-    host = get_host(db, url)
+async def update_host(db: AsyncSession, hostform: HostForm, url: str):
+    host = await get_host(db, url)
     if host:
         host.name = hostform.site_name
         host.data = hostform.site_content
         host.route = hostform.url
-        db.commit()
-        db.refresh(host)
+        await db.commit()
+        #await db.refresh(host)
         return True
 
 
+async def get_all_hosts(db: AsyncSession, username: str):
+    hosts = await db.execute(select(HostModel).join(UserModel).filter(UserModel.username == username))
+    return hosts.scalars().all()
 
 
-def get_all_hosts(db: Session, username: str):
-    return db.query(HostModel).join(UserModel).filter(UserModel.username == username).all()
-
-
-def create_host(db: Session, hostform: HostForm, username: str):
-    if not get_host(db, hostform.url):
-        user = get_user(username, db)
+async def create_host(db: AsyncSession, hostform: HostForm, username: str):
+    if not await get_host(db, hostform.url):
+        user = await get_user(username, db)
         host = HostModel(name=hostform.site_name, data=hostform.site_content, route=hostform.url, user=user)
         db.add(host)
-        db.commit()
-        db.refresh(host)
+        await db.commit()
+        #await db.refresh(host)
         return host
 
