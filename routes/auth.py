@@ -25,7 +25,6 @@ async def login_post(request: Request, db: AsyncSession = Depends(get_db)):
     form = UserForm(request)
     await form.load_data()
     user = await get_user(form.username, db)
-    print(user, 2292992)
     if user and Hasher.verify_password(form.password, user.password_hash):
         request.session['username'] = user.username
         return RedirectResponse(request.url_for('main_get'), status_code=303)
@@ -46,7 +45,6 @@ async def register_post(request: Request, db: AsyncSession = Depends(get_db)):
     form = UserForm(request)
     await form.load_data()
     user = await add_new_user(form.username, form.password, db)
-    print(user, 392393939)
     if user:
         request.session['username'] = user.username
         return RedirectResponse(request.url_for('main_get'), status_code=303)
